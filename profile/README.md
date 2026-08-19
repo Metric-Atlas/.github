@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./assets/metric-atlas-icon.png" width="168" alt="Metric Atlas logo" />
+<img src="./assets/metric_atlas_logo.png" width="168" alt="Metric Atlas logo" />
 
 # Metric Atlas
 
