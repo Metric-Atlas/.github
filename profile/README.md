@@ -1,85 +1,120 @@
 <div align="center">
 
-# 🗺️ Metric Atlas
+<img src="./assets/metric-atlas-icon.png" width="168" alt="Metric Atlas logo" />
 
-### Make analytics implementation visible, verifiable, and trustworthy.
+# Metric Atlas
 
-이미 존재하는 React·Vite 코드에서 분석 이벤트를 발견하고, 화면 요소와 연결한 뒤, GA4 실측·설정과 대조하여 Analytics Health를 보여주는 도구입니다.
+### See what your frontend tracks — and whether your analytics agree.
 
-[Main Repository](https://github.com/Metric-Atlas/Metric-Atlas) · [Documentation](https://github.com/Metric-Atlas/Metric-Atlas/tree/main/docs) · [Contributing](https://github.com/Metric-Atlas/Metric-Atlas/blob/main/CONTRIBUTING.md)
+Metric Atlas is an open-source analytics observability toolkit for React and Vite applications. It discovers tracking events in existing source code, connects them to real interface elements, and compares the implementation with GA4 data and configuration.
 
-<img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-Node.js-3178C6?style=flat-square&logo=typescript&logoColor=white"> <img alt="React and Vite" src="https://img.shields.io/badge/React%20%2B%20Vite-first-646CFF?style=flat-square&logo=vite&logoColor=white"> <img alt="GA4" src="https://img.shields.io/badge/GA4-first-E37400?style=flat-square&logo=googleanalytics&logoColor=white">
+[Repository](https://github.com/Metric-Atlas/Metric-Atlas) · [Documentation](https://github.com/Metric-Atlas/Metric-Atlas/tree/main/docs) · [Contributing](https://github.com/Metric-Atlas/Metric-Atlas/blob/main/CONTRIBUTING.md)
+
+![TypeScript](https://img.shields.io/badge/TypeScript-Node.js-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![React and Vite](https://img.shields.io/badge/React%20%2B%20Vite-first-646CFF?style=flat-square&logo=vite&logoColor=white)
+![GA4](https://img.shields.io/badge/GA4-analytics%20health-E37400?style=flat-square&logo=googleanalytics&logoColor=white)
 
 </div>
 
 ---
 
-## Analytics 코드와 실제 데이터를 하나의 지도로
+## Analytics instrumentation should not be a guessing game
 
-이벤트 정보는 코드, 문서, 화면, 분석 도구에 흩어지고 시간이 지나면서 서로 어긋납니다. Metric Atlas는 이미 존재하는 코드를 출발점으로 이 흐름을 연결합니다.
+Tracking knowledge is usually scattered across source code, spreadsheets, dashboards, and the people who remember how everything was wired. As applications evolve, those sources drift apart.
 
-~~~text
-Existing React + Vite Code
+Metric Atlas turns the implementation itself into a living analytics map.
+
+```text
+Existing frontend code
         ↓
-Event Detection & JSX Binding
+Event detection and UI binding
         ↓
-Live Event Overlay & Manifest
+Live overlay and event manifest
         ↓
-GA4 Observation & Configuration
+GA4 observation and configuration
         ↓
-Analytics Health, Search & Query
-~~~
+Analytics health, search, and query
+```
 
-## 핵심 기능
+## What Metric Atlas does
 
-- **Event Overlay** — 화면 요소를 호버하여 원본 이벤트명, Emitter, Provider, 파라미터, 코드 위치를 확인합니다.
-- **Analytics Health** — Code detected / GA4 observed / GA4 managed / Custom Dimension gap 상태를 서로 대조합니다.
-- **PR Analytics Change Report** — Base와 Head Git tree를 스캔하여 이벤트 추가·삭제·Provider·파라미터·warning 변화를 PR에 전달합니다.
-- **Search & Query** — 원본 이벤트를 검색하고 GA4 결과를 조회합니다. 자연어 기능은 Core MVP를 막지 않는 선택 기능입니다.
+### Explore tracking directly in the product
 
-## 설계 원칙
+Open the Metric Atlas overlay and hover a tracked element to see its original event name, emitter, analytics provider, parameters, and source location.
 
-- 사용자 소스파일은 수정하지 않고 빌드 결과에만 overlay metadata를 주입합니다.
-- GA4와 GTM을 같은 개념으로 취급하지 않습니다. dataLayer.push는 GTM Emitter이며 목적 Provider를 임의 추론하지 않습니다.
-- 지원하지 않는 wrapper, dynamic event, Custom Component binding을 조용히 누락하지 않고 review-needed warning으로 남깁니다.
-- GA4 Result Status와 Data Quality Flag를 분리합니다.
-- Secret은 브라우저 bundle, localStorage, Git, Manifest에 저장하지 않습니다.
-- Database 없이 Single Node Runtime과 인메모리 cache를 사용합니다.
+### Compare code with analytics reality
 
-## Local Demo
+See which events exist in code, which are observed in GA4, which are managed automatically, and which custom parameters are missing Custom Dimension registration.
 
-Node.js 22.18 이상이 필요합니다.
+### Review analytics changes in every pull request
 
-~~~bash
+Scan the base and head Git trees to report added or removed events, provider and emitter changes, parameter changes, unresolved bindings, and unsupported patterns.
+
+### Search without rewriting event semantics
+
+Find events by their original names, source locations, providers, and health status. Optional natural-language querying builds on the same verified event catalog.
+
+<p align="center">
+  <img src="./assets/overview.png" width="100%" alt="Metric Atlas analytics health overview" />
+</p>
+
+<table>
+  <tr>
+    <td width="50%"><img src="./assets/events.png" alt="Metric Atlas event explorer" /></td>
+    <td width="50%"><img src="./assets/query.png" alt="Metric Atlas query view" /></td>
+  </tr>
+</table>
+
+## Built around clear boundaries
+
+- Your source files stay untouched. DOM metadata is injected only into build output.
+- GA4 and GTM remain distinct concepts. A `dataLayer.push(...)` call is a GTM emitter, not automatically a GA4 event.
+- Unsupported wrappers, dynamic names, and unresolved bindings become visible warnings instead of silent omissions.
+- Analytics result status and data-quality flags remain separate.
+- Credentials stay in the Node runtime — never in the browser bundle, manifest, local storage, Git, or logs.
+- No database is required.
+
+## Try it locally
+
+Requirements: Node.js 22.18 or later.
+
+```bash
 git clone https://github.com/Metric-Atlas/Metric-Atlas.git
 cd Metric-Atlas
 corepack enable
 pnpm install --frozen-lockfile
 pnpm demo
-~~~
+```
 
-브라우저에서 [http://127.0.0.1:5180](http://127.0.0.1:5180)을 엽니다.
+Open [http://127.0.0.1:5180](http://127.0.0.1:5180).
 
-Demo의 Detector, Manifest, DOM binding, Overlay는 현재 소스를 대상으로 실제 동작합니다. GA4 Health와 Query 수치는 안전한 fixture를 사용하므로 API key나 실제 Analytics credential 없이 체험할 수 있습니다.
+The local demo runs the detector, manifest, DOM binding, and overlay against real source code. GA4 health and query data use safe fixtures, so no analytics credentials are required.
 
-전체 검증:
+Run the complete verification suite:
 
-~~~bash
+```bash
 pnpm verify
-~~~
+```
 
-## 현재 MVP 범위
+## Architecture
 
-현재 공식 탐지 기준은 정적 이벤트명의 GA4/GTM 직접 호출, 같은 파일 handler, 네이티브 JSX 요소입니다. Wrapper 호출, 파일 간 호출 그래프, Custom Component 자동 overlay 주입은 아직 공식 지원 범위 밖이며 결과와 warning은 가능한 한 보존합니다.
+Metric Atlas is a TypeScript monorepo built around small, explicit boundaries:
 
-GA4를 첫 Connector로 개발 중이며, 여러 Provider의 수치를 자동으로 합산하지 않습니다.
+- **Detector and Vite plugin** — source analysis, JSX binding, manifest generation, and build-output instrumentation
+- **Overlay** — live event metadata inside the application UI
+- **GA4 connector and health engine** — observation, managed-event classification, registration gaps, and quality signals
+- **Node runtime** — static assets, manifests, analytics APIs, credentials, and in-memory caching
+- **Dashboard and query tools** — health exploration, event search, comparisons, and optional natural-language workflows
+- **CLI and GitHub Actions** — scans, manifest diffs, and pull-request reports
 
-## Repository
+## Contributing
 
-| Repository | Description |
-| --- | --- |
-| [Metric-Atlas](https://github.com/Metric-Atlas/Metric-Atlas) | Detector, contracts, Vite plugin, overlay, GA4 connector, runtime, dashboard, CLI가 포함된 main monorepo |
+Metric Atlas is built in the open and welcomes thoughtful issues, discussions, documentation improvements, test cases, and code contributions.
 
-## 함께 만들기
+Start with the [Contributing Guide](https://github.com/Metric-Atlas/Metric-Atlas/blob/main/CONTRIBUTING.md), then explore the [project documentation](https://github.com/Metric-Atlas/Metric-Atlas/tree/main/docs) and [source of truth](https://github.com/Metric-Atlas/Metric-Atlas/blob/main/docs/00-project-source-of-truth.md).
 
-프로젝트는 Core MVP를 개발 중입니다. 이슈를 열기 전에 [Source of Truth](https://github.com/Metric-Atlas/Metric-Atlas/blob/main/docs/00-project-source-of-truth.md), [Architecture](https://github.com/Metric-Atlas/Metric-Atlas/blob/main/docs/04-system-architecture.md), [Contributing Guide](https://github.com/Metric-Atlas/Metric-Atlas/blob/main/CONTRIBUTING.md)를 확인해 주세요.
+<div align="center">
+
+**Make analytics implementation visible, verifiable, and trustworthy.**
+
+</div>
